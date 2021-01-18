@@ -1,0 +1,108 @@
+button, input:focus {
+    outline: 0;
+}
+
+header {
+    position: absolute;
+    left: 27px;
+    top: 0px;
+    right: 0px;
+    padding: 40px 10px 10px 650px;
+    font-family: Roboto Serif;
+    font-style: normal;
+    font-size: 25px;
+    line-height: 90px;
+    width: 1950px;
+    display: flex;
+    align-items: center;
+    background-color: #6efce4;
+    border-radius: 10%;
+
+    color: rgba(0, 0, 0, 0.75);
+}
+
+footer {
+    position: absolute;
+    padding: 10px 10px 10px 21px;
+    bottom: 0px;
+    font-family: Roboto Serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+
+    color: rgba(0, 0, 0, 0.75);
+}
+
+body {
+    /*margin: -10%;*/
+    /*position: absolute;*/
+    /*left: 0px;*/
+    /*top: 0px;*/
+    /*display: flex;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+
+
+    background-size: 400% 400%;
+    overflow: hidden;
+}
+
+
+/* Rectangle */
+.mainRect {
+    display: inline-block;
+    width: 417px;
+    height: 417px;
+    mix-blend-mode: hard-light;
+    border-radius: 20px;
+    background-color: rgba(205, 205, 205, 0.85);
+}
+
+.inputFields {
+    position: relative;
+    padding: 40px 80px 30px 80px;
+    height: 329px;
+    width: 389px;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.buttonCheck {
+    width: 200px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    font-family: Roboto Serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 21px;
+    border: none;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+}
+
+
+.buttonCheck:active {
+    background-color: #a9a9a9;
+}
+
+
+
+
+
+.clock {
+    background-blend-mode: hard-light;
+    text-align: center;
+}
+
+body > article {
+    margin-top: 12%;
+    text-align: center;
+}
+
+
