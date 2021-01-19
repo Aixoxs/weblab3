@@ -9,7 +9,7 @@ public class DBConnection {
         Connection connection = null;
         try {
             Class.forName ("org.postgresql.Driver").newInstance();
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","1234");
+            connection = DriverManager.getConnection("jdbc:postgresql://pg:5432/studs","s282736","xah500");
             System.out.println ("Database connection established");
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.out.println(e.getMessage());
