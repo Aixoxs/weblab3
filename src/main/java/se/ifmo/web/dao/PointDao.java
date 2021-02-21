@@ -2,9 +2,8 @@ package se.ifmo.web.dao;
 
 import lombok.Data;
 import se.ifmo.web.model.Point;
+import se.ifmo.web.util.ConnectionPool;
 
-import javax.annotation.Resource;
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +11,12 @@ import java.util.List;
 @Data
 public class PointDao {
 
-    @Resource(name = "jdbc/DB")
-    DataSource dataSource;
-
-
     public PointDao(){
     }
 
     public void save(Point point) {
-        try(Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQLPoint.INSERT.QUERY)){
+        try(Connection connection = ConnectionPool.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQLPoint.INSERT.QUERY)){
             statement.setBoolean(1, point.isInside());
             statement.setDouble(2,point.getRadius());
             statement.setDouble(3,point.getXCoordinate());
@@ -34,7 +29,7 @@ public class PointDao {
 
     public List<Point> getAllPoints(){
         List<Point> pointList = new ArrayList<>();
-        try(Connection connection = dataSource.getConnection();
+        try(Connection connection = ConnectionPool.getInstance().getConnection();
                 Statement statement = connection.createStatement()){
             ResultSet resultSet = statement.executeQuery(SQLPoint.GETALL.QUERY);
             while (resultSet.next()){
@@ -53,7 +48,7 @@ public class PointDao {
     }
 
     public void deleteAllPoints(){
-        try(Connection connection = dataSource.getConnection();
+        try(Connection connection = ConnectionPool.getInstance().getConnection();
                 Statement statement = connection.createStatement()) {
             statement.executeUpdate(SQLPoint.DELETEALL.QUERY);
         } catch (SQLException throwables) {
