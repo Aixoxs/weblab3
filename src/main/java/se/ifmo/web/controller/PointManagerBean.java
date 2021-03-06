@@ -3,30 +3,23 @@ package se.ifmo.web.controller;
 import se.ifmo.web.dao.PointDao;
 import se.ifmo.web.model.Point;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-import javax.sql.DataSource;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
-@Named(value = "pointManager")
+@ManagedBean(name = "pointManager")
 @SessionScoped
 public class PointManagerBean implements Serializable {
     private Point point;
+    @ManagedProperty(value = "#{pointDao}")
     private PointDao pointDao;
-    @Resource(lookup="java:jboss/datasources/PostGreDS")
-    private DataSource dataSource;
+//    @Inject
 
-    public PointManagerBean() throws SQLException {
+
+    public PointManagerBean() {
         point = new Point(0, 0, 1, false);
-    }
-
-    @PostConstruct
-    public void init(){
-        pointDao = new PointDao(dataSource);
     }
 
     public double getXCoordinate() {
@@ -76,5 +69,21 @@ public class PointManagerBean implements Serializable {
 
     public List<Point> getAllPoints() {
         return pointDao.getAllPoints();
+    }
+
+    public void setPointDao(PointDao pointDao) {
+        this.pointDao = pointDao;
+    }
+
+    public PointDao getPointDao() {
+        return pointDao;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
+    public Point getPoint() {
+        return point;
     }
 }

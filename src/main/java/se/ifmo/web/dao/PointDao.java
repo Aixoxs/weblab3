@@ -2,16 +2,23 @@ package se.ifmo.web.dao;
 
 import se.ifmo.web.model.Point;
 
+import javax.annotation.Resource;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.sql.DataSource;
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PointDao {
+@ManagedBean(name = "pointDao")
+@ApplicationScoped
+public class PointDao implements Serializable {
+    @Resource(lookup="java:jboss/datasources/PostGreDS")
     private DataSource dataSource;
 
-    public PointDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public PointDao() {
+
     }
 
     public void save(Point point) {
