@@ -1,38 +1,38 @@
 package se.ifmo.web.dao;
 
-import lombok.Data;
 import se.ifmo.web.model.Point;
-import se.ifmo.web.util.ConnectionPool;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 public class PointDao {
+    private DataSource dataSource;
 
-    public PointDao(){
+    public PointDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public void save(Point point) {
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(SQLPoint.INSERT.QUERY)){
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQLPoint.INSERT.QUERY)) {
             statement.setBoolean(1, point.isInside());
-            statement.setDouble(2,point.getRadius());
-            statement.setDouble(3,point.getXCoordinate());
-            statement.setDouble(4,point.getYCoordinate());
+            statement.setDouble(2, point.getRadius());
+            statement.setDouble(3, point.getXCoordinate());
+            statement.setDouble(4, point.getYCoordinate());
             statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public List<Point> getAllPoints(){
+    public List<Point> getAllPoints() {
         List<Point> pointList = new ArrayList<>();
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-                Statement statement = connection.createStatement()){
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQLPoint.GETALL.QUERY);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Point point = new Point();
                 point.setInside(resultSet.getBoolean("inside_area"));
                 point.setRadius(resultSet.getDouble("radius"));
@@ -47,22 +47,40 @@ public class PointDao {
         return pointList;
     }
 
-    public void deleteAllPoints(){
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-                Statement statement = connection.createStatement()) {
+    public void deleteAllPoints() {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             statement.executeUpdate(SQLPoint.DELETEALL.QUERY);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    enum SQLPoint{
+    void createTable() {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.execute("create table if not exists points\n" +
+                    "(\n" +
+                    "    id           serial not null\n" +
+                    "        constraint points_pkey\n" +
+                    "            primary key,\n" +
+                    "    inside_area  boolean,\n" +
+                    "    radius       double precision,\n" +
+                    "    x_coordinate double precision,\n" +
+                    "    y_coordinate double precision\n" +
+                    ");");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    enum SQLPoint {
         INSERT("INSERT INTO points VALUES (DEFAULT, (?), (?), (?), (?))"),
         GETALL("SELECT * FROM points"),
         DELETEALL("DELETE FROM points");
         String QUERY;
 
-        SQLPoint(String QUERY){
+        SQLPoint(String QUERY) {
             this.QUERY = QUERY;
         }
     }

@@ -1,24 +1,32 @@
 package se.ifmo.web.controller;
 
-import lombok.Data;
 import se.ifmo.web.dao.PointDao;
 import se.ifmo.web.model.Point;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.sql.DataSource;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 
 @Named(value = "pointManager")
-@Data
 @SessionScoped
 public class PointManagerBean implements Serializable {
     private Point point;
     private PointDao pointDao;
+    @Resource(lookup="java:jboss/datasources/PostGreDS")
+    private DataSource dataSource;
 
-    public PointManagerBean() {
+    public PointManagerBean() throws SQLException {
         point = new Point(0, 0, 1, false);
-        pointDao = new PointDao();
+    }
+
+    @PostConstruct
+    public void init(){
+        pointDao = new PointDao(dataSource);
     }
 
     public double getXCoordinate() {

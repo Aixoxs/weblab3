@@ -1,7 +1,5 @@
 package se.ifmo.web.model;
 
-import lombok.Data;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -9,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Named(value = "date")
-@Data
 @ViewScoped
 public class DateBean implements Serializable {
     private SimpleDateFormat simpleDateFormat;
